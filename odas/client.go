@@ -1,38 +1,83 @@
 package odas
 
 import (
-	"bytes"
-	"crypto/md5"
 	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
-	"net/url"
-	"strconv"
-	"time"
+	"sync"
 )
 
-type Client struct {
-	AccessId  string
-	AccessKey string
+type DoOption struct {
+	Token string
 }
 
-func (o *Client) Do(token string, r IRequest, v any) error {
-	u := fmt.Sprintf("%s%s", BaseURL, r.Api())
-	request, err := http.NewRequest(r.Method(), u, bytes.NewBuffer(r.Body()))
+func NewDoOption() *DoOption {
+	return &DoOption{}
+}
+
+type Option func(options *DoOption)
+
+func WithToken(token string) Option {
+	return func(options *DoOption) {
+		options.Token = token
+	}
+}
+
+type IAM struct {
+	AccessId  string
+	AccessKey string
+
+	mutex   sync.Mutex
+	Builder IBuilder
+	Client  IClient
+}
+
+func (o *IAM) SetBuilder(builder IBuilder) {
+	o.mutex.Lock()
+	defer o.mutex.Unlock()
+	o.Builder = builder
+}
+
+func (o *IAM) Do(req IRequest, v any, opts ...Option) error {
+	if o.Builder == nil {
+		o.mutex.Lock()
+		if o.Builder == nil {
+			o.Builder = NewBuilder(o.AccessKey)
+		}
+		o.mutex.Unlock()
+	}
+	var options = NewDoOption()
+	for _, opt := range opts {
+		opt(options)
+	}
+	if options.Token != "" {
+		o.Builder.WithToken(options.Token)
+	}
+	request, err := o.Builder.Build(req)
 	if err != nil {
 		return err
 	}
+	return o.Client.Do(request, v)
+}
 
-	request.Header.Set("Content-Type", r.ContentType())
-	if r.Api() != "/token" {
-		timestamp := strconv.Itoa(int(time.Now().UnixMilli()))
-		request.Header.Set("X-TOKEN", token)
-		request.Header.Set("X-TIMESTAMP", timestamp)
-		signature := o.sign(request.Method, request.URL.RequestURI(), token, timestamp)
-		request.Header.Set("X-SIGNATURE", signature)
+func NewIAM(accessId, accessKey string) *IAM {
+	return &IAM{
+		AccessId:  accessId,
+		AccessKey: accessKey,
+		Builder:   NewBuilder(accessKey),
+		Client:    NewClient(),
 	}
+}
 
+type IClient interface {
+	Do(req *http.Request, v any) error
+}
+
+type Client struct {
+}
+
+func (o *Client) Do(request *http.Request, v any) error {
 	cli := http.Client{}
 	response, err := cli.Do(request)
 	if err != nil {
@@ -46,41 +91,21 @@ func (o *Client) Do(token string, r IRequest, v any) error {
 	if err != nil {
 		return err
 	}
-	var reply ODASResponse
+	var reply Response
 	err = json.Unmarshal(respBytes, &reply)
 	if err != nil {
 		return err
 	}
-	if reply.Code != Ok {
+	if !reply.IsOk() {
 		return fmt.Errorf("code %d, message: %s", reply.Code, reply.Msg)
 	}
-	var result json.RawMessage
-	if reply.Result != nil {
-		result = reply.Result
-	} else {
-		result = reply.Data
-	}
-	err = json.Unmarshal(result, &v)
+	err = json.Unmarshal(reply.GetResult(), &v)
 	if err != nil {
 		return err
 	}
 	return nil
 }
 
-func (o *Client) sign(method, uri, token, timestamp string) string {
-	values := url.Values{}
-	values.Add("method", method)
-	values.Add("api", uri)
-	values.Add("token", token)
-	values.Add("timestamp", timestamp)
-	values.Add("secret", o.AccessKey)
-	encoded := values.Encode()
-	sum := md5.Sum([]byte(encoded))
-	sign := fmt.Sprintf("%x", sum[:])
-	return sign
-}
-
-func NewClient(accessId, accessKey string) *Client {
-	client := &Client{AccessId: accessId, AccessKey: accessKey}
-	return client
+func NewClient() *Client {
+	return &Client{}
 }

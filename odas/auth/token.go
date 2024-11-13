@@ -1,4 +1,4 @@
-package odas
+package auth
 
 import (
 	"encoding/json"
@@ -33,8 +33,15 @@ func (o *TokenRequest) ContentType() string {
 	return "application/json"
 }
 
+func (o *TokenRequest) AuthRequired() bool {
+	return false
+}
+
 func NewTokenRequest(accessId, accessKey string) *TokenRequest {
-	return &TokenRequest{AccessId: accessId, AccessKey: accessKey}
+	return &TokenRequest{
+		AccessId:  accessId,
+		AccessKey: accessKey,
+	}
 }
 
 type TokenResponse struct {
