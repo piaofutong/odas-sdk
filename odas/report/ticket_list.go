@@ -34,12 +34,12 @@ func (t TicketListReq) Api() string {
 }
 
 type TicketListResponse struct {
-	Total *odas.BaseVerifiedSummaryVO `json:"total"`
-	List  []*TicketListData           `json:"list"`
+	Total *odas.BaseReportSummaryVO `json:"total"`
+	List  []*TicketListData         `json:"list"`
 }
 
 type TicketListData struct {
 	TicketId   int    `json:"ticketId"`
 	TicketName string `json:"ticketName"`
-	odas.BaseVerifiedSummaryVO
+	odas.BaseReportSummaryVO
 }

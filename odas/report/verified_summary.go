@@ -22,7 +22,7 @@ func (req *VerifiedSummaryReq) Api() string {
 }
 
 type VerifiedSummaryResponse struct {
-	odas.BaseVerifiedSummaryVO
+	odas.BaseReportSummaryVO
 	CalcTicketNum int     `json:"calcTicketNum"`
 	CalcOrderNum  int     `json:"calcOrderNum"`
 	CalcAmount    float64 `json:"calcAmount"`

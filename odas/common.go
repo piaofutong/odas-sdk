@@ -104,7 +104,7 @@ type Pagination struct {
 	Pages    int `json:"pages"`
 }
 
-type BaseVerifiedSummaryVO struct {
+type BaseReportSummaryVO struct {
 	OrderNum             int `json:"orderNum"`
 	OrderTicket          int `json:"orderTicket"`
 	OrderAmount          int `json:"orderAmount"`
@@ -131,7 +131,7 @@ type BaseVerifiedSummaryVO struct {
 	AfterSaleIncomeMoney int `json:"afterSaleIncomeMoney"`
 }
 
-type StatDO struct {
+type InoutStatVO struct {
 	In          int `json:"in"`           // 入园数
 	Out         int `json:"out"`          // 出园数
 	Employee    int `json:"employee"`     // 员工卡入园数

@@ -48,4 +48,4 @@ func NewFlowByDeviceReq(devices string, hour int) FlowByDeviceReq {
 	}
 }
 
-type FlowByDeviceResponse map[string]*odas.StatDO
+type FlowByDeviceResponse map[string]*odas.InoutStatVO
