@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/piaofutong/odas-sdk/utils"
 	"net/http"
+	"net/url"
 	"strconv"
 	"time"
 )
@@ -45,10 +46,11 @@ func (r *RequestBuilder) Build(req IRequest) (*http.Request, error) {
 		timestamp := strconv.Itoa(int(time.Now().UnixMilli()))
 		request.Header.Set("X-TOKEN", r.token)
 		request.Header.Set("X-TIMESTAMP", timestamp)
+		uri, _ := url.QueryUnescape(req.Api())
 		signature := utils.Signature{
 			AccessKey: r.accessKey,
 			Method:    req.Method(),
-			Uri:       req.Api(),
+			Uri:       uri,
 			Token:     r.token,
 			Timestamp: strconv.Itoa(int(time.Now().UnixMilli())),
 		}
