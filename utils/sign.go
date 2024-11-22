@@ -17,8 +17,7 @@ type Signature struct {
 func (s *Signature) Sign() string {
 	values := url.Values{}
 	values.Add("method", s.Method)
-	uri, _ := url.QueryUnescape(s.Uri)
-	values.Add("api", uri)
+	values.Add("api", s.Uri)
 	values.Add("token", s.Token)
 	values.Add("timestamp", s.Timestamp)
 	values.Add("secret", s.AccessKey)
