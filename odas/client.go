@@ -83,7 +83,7 @@ func (o *Client) Do(request *http.Request, v any) error {
 	if err != nil {
 		return err
 	}
-	defer response.Body.Close()
+	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != http.StatusOK {
 		return fmt.Errorf("status code %d", response.StatusCode)
 	}
