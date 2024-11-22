@@ -40,10 +40,15 @@ func (o *Response) GetResult() json.RawMessage {
 
 const ProdBaseURL = "https://odas.12301.cc"
 const TestBaseURL = "http://10.53.0.14:23080"
+const LocalBaseURL = "http://127.0.0.1:80"
 const Ok = 0
 
 var baseURL = ProdBaseURL
 
 func SetTestMode() {
 	baseURL = TestBaseURL
+}
+
+func SetLocalMode() {
+	baseURL = LocalBaseURL
 }
