@@ -31,11 +31,10 @@ func (l LocalReq) Api() string {
 	if l.Unknown {
 		params.Add("unknown", strconv.FormatBool(l.Unknown))
 	}
-	ps := fmt.Sprintf("/v4/tourist/touristLocal?%s", params.Encode())
 	if l.Province != "" {
-		ps += fmt.Sprintf("&province=%s", l.Province)
+		params.Add("province", l.Province)
 	}
-	return ps
+	return fmt.Sprintf("/v4/tourist/touristLocal?%s", params.Encode())
 }
 
 type LocalResponse struct {

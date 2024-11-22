@@ -26,11 +26,10 @@ func (r SexAgeSummaryReq) Api() string {
 	if r.Unknown {
 		params.Add("unknown", strconv.FormatBool(r.Unknown))
 	}
-	ps := fmt.Sprintf("/v4/portrait/ageSummary?%s", params.Encode())
 	if r.Province != "" {
-		ps += fmt.Sprintf("&province=%s", r.Province)
+		params.Add("province", r.Province)
 	}
-	return ps
+	return fmt.Sprintf("/v4/portrait/ageSummary?%s", params.Encode())
 }
 
 type AgeSummaryResponse struct {

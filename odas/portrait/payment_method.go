@@ -26,11 +26,10 @@ func (r PaymentMethodReq) Api() string {
 	if r.Limit > 0 {
 		params.Add("limit", strconv.Itoa(r.Limit))
 	}
-	ps := fmt.Sprintf("/v4/portrait/paymentMethod?%s", params.Encode())
 	if r.Province != "" {
-		ps += fmt.Sprintf("&province=%s", r.Province)
+		params.Add("province", r.Province)
 	}
-	return ps
+	return fmt.Sprintf("/v4/portrait/paymentMethod?%s", params.Encode())
 }
 
 type PaymentMethodResponse struct {

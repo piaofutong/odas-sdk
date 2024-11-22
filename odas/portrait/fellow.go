@@ -19,11 +19,11 @@ func NewFellowReq(req *odas.Req, province string) *FellowReq {
 }
 
 func (r *FellowReq) Api() string {
-	ps := "/v4/portrait/fellow?" + r.Req.Params().Encode()
+	params := r.Req.Params()
 	if r.Province != "" {
-		ps += fmt.Sprintf("&province=%s", r.Province)
+		params.Add("province", r.Province)
 	}
-	return ps
+	return fmt.Sprintf("/v4/portrait/fellow?%s", params.Encode())
 }
 
 type FellowResponse struct {

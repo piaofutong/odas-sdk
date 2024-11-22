@@ -26,11 +26,10 @@ func (t TicketListReq) Api() string {
 	if t.Limit > 0 {
 		params.Add("limit", strconv.Itoa(t.Limit))
 	}
-	ps := fmt.Sprintf("/v4/report/ticketList?%s", params.Encode())
 	if t.TicketId != "" {
-		ps += fmt.Sprintf("&ticletId=%s", t.TicketId)
+		params.Add("ticketId", t.TicketId)
 	}
-	return ps
+	return fmt.Sprintf("/v4/report/ticketList?%s", params.Encode())
 }
 
 type TicketListResponse struct {

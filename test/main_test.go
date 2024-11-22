@@ -9,14 +9,14 @@ import (
 var (
 	accessId     = "abcdefg"
 	accessKey    = "abcdefg"
-	token        = "8162bf7c1fb359b305c393deeb3da983e2ff7663"
+	token        = "4be8e8b6c0dd8a9e2caa091fd092a36a83a62a5e"
 	sid          = 3385
 	start        = "2024-09-01"
 	end          = "2024-11-01"
 	startCompare = "2024-07-01"
 	endCompare   = "2024-09-01"
-	lid          = "116157"
-	excludeLid   = "116157"
+	lid          = "116157,116155"
+	excludeLid   = "116157,116156"
 	gid          = 2
 )
 

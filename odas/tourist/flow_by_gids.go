@@ -17,11 +17,10 @@ func (f FlowByGIdsReq) Api() string {
 	if f.Date != "" {
 		params.Add("date", f.Date)
 	}
-	ps := fmt.Sprintf("/v2/tourist/inout/flowByGIds?%s", params.Encode())
 	if f.GIds != "" {
-		ps += fmt.Sprintf("&gIds=%s", f.GIds)
+		params.Add("gIds", f.GIds)
 	}
-	return ps
+	return fmt.Sprintf("/v2/tourist/inout/flowByGIds?%s", params.Encode())
 }
 
 func (f FlowByGIdsReq) Body() []byte {
