@@ -7,10 +7,14 @@ import (
 
 type BookingTeamOrderReq struct {
 	odas.Req
+	odas.DateRangeCompareReq
 }
 
-func NewBookingTeamOrderReq(req *odas.Req) *BookingTeamOrderReq {
-	return &BookingTeamOrderReq{Req: *req}
+func NewBookingTeamOrderReq(req *odas.Req, dateRangeCompareReq *odas.DateRangeCompareReq) *BookingTeamOrderReq {
+	return &BookingTeamOrderReq{
+		Req:                 *req,
+		DateRangeCompareReq: *dateRangeCompareReq,
+	}
 }
 
 func (r *BookingTeamOrderReq) Api() string {
