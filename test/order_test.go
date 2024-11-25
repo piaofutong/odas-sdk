@@ -34,6 +34,9 @@ func TestService_BookingTeamOrder(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
+	}, &odas.DateRangeCompareReq{
+		CompareStart: startCompare,
+		CompareEnd:   endCompare,
 	})
 	var r order.BookingTeamOrderResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
