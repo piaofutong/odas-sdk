@@ -27,6 +27,27 @@ func TestService_City(t *testing.T) {
 	}
 }
 
+func TestService_CityByVerify(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := portrait.NewCityByVerifyReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	}, &odas.DateRangeCompareReq{
+		CompareStart: startCompare,
+		CompareEnd:   endCompare,
+	}, "福建省", true, 10)
+	var r []*portrait.CityRankResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestService_Fellow(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
 	req := portrait.NewFellowReq(&odas.Req{
@@ -87,6 +108,45 @@ func TestService_Province(t *testing.T) {
 func TestService_SexAgeSummary(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
 	req := portrait.NewSexAgeSummaryReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	}, "福建省", true)
+	var r portrait.AgeSummaryResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestService_ProvinceByVerify(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := portrait.NewProvinceByVerifyReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	}, &odas.DateRangeCompareReq{
+		CompareStart: startCompare,
+		CompareEnd:   endCompare,
+	}, 10, true)
+	var r []*portrait.ProvinceRankResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestService_SexAgeSummaryByVerify(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := portrait.NewSexAgeSummaryByVerifyReq(&odas.Req{
 		DateRangeReq: odas.DateRangeReq{
 			Sid:   sid,
 			Start: start,

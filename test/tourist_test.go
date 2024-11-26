@@ -86,9 +86,27 @@ func TestService_InoutSummary(t *testing.T) {
 	}
 }
 
-func TestService_PassengerFlowByDate(t *testing.T) {
+func TestService_DailyPassengerFlow(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewPassengerFlowByDateReq(&odas.Req{
+	req := tourist.NewDailyPassengerFlowReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	}, true)
+	var r tourist.PassengerFlowByDateResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestService_DailyPassengerFlowByVerify(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := tourist.NewDailyPassengerFlowByVerifyReq(&odas.Req{
 		DateRangeReq: odas.DateRangeReq{
 			Sid:   sid,
 			Start: start,
@@ -107,6 +125,24 @@ func TestService_PassengerFlowByDate(t *testing.T) {
 func TestService_TouristLocal(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
 	req := tourist.NewLocalReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	}, "福建省", 10, true)
+	var r tourist.LocalResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestService_TouristLocalByVerify(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := tourist.NewLocalByVerifyReq(&odas.Req{
 		DateRangeReq: odas.DateRangeReq{
 			Sid:   sid,
 			Start: start,

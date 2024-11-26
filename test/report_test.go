@@ -6,24 +6,6 @@ import (
 	"testing"
 )
 
-func TestService_TerminalPassHourSummary(t *testing.T) {
-	iam := odas.NewIAM(accessId, accessKey)
-	req := report.NewTerminalPassHourSummaryReq(&odas.Req{
-		DateRangeReq: odas.DateRangeReq{
-			Sid:   sid,
-			Start: start,
-			End:   end,
-		},
-		Lid:        lid,
-		ExcludeLid: excludeLid,
-	})
-	var r report.TerminalPassHourSummaryReq
-	err := iam.Do(req, &r, odas.WithToken(token))
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func TestService_TerminalPassSummary(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
 	req := report.NewTerminalPassSummaryReq(&odas.Req{
@@ -34,7 +16,7 @@ func TestService_TerminalPassSummary(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	})
+	}, report.WithTerminalType("1,2,4,19,20,46"))
 	var r report.TerminalPassSummaryResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
