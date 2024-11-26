@@ -6,24 +6,24 @@ import (
 	"strconv"
 )
 
-type PassengerFlowByDateReq struct {
+type DailyPassengerFlowReq struct {
 	odas.Req
 	Unknown bool `form:"unknown" json:"unknown" binding:"omitempty"`
 }
 
-func NewPassengerFlowByDateReq(req *odas.Req, unknown bool) *PassengerFlowByDateReq {
-	return &PassengerFlowByDateReq{
+func NewDailyPassengerFlowReq(req *odas.Req, unknown bool) *DailyPassengerFlowReq {
+	return &DailyPassengerFlowReq{
 		Req:     *req,
 		Unknown: unknown,
 	}
 }
 
-func (r PassengerFlowByDateReq) Api() string {
+func (r DailyPassengerFlowReq) Api() string {
 	params := r.Req.Params()
 	if r.Unknown {
 		params.Add("unknown", strconv.FormatBool(r.Unknown))
 	}
-	return fmt.Sprintf("/v4/tourist/passengerFlowByDate?%s", params.Encode())
+	return fmt.Sprintf("/v4/tourist/dailyPassengerFlow?%s", params.Encode())
 }
 
 type PassengerFlowByDateResponse struct {
