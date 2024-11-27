@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/piaofutong/odas-sdk/odas"
+	"github.com/piaofutong/odas-sdk/odas/auth"
 	"os"
 	"testing"
 )
@@ -9,7 +10,7 @@ import (
 var (
 	accessId     = "abcdefg"
 	accessKey    = "abcdefg"
-	token        = "779ae0b4ff3ebdad21433e7b7f33aa57d75f155e"
+	token        = "999d432ba819b623c14d3a728b8f55d1818672b4"
 	sid          = 3385
 	start        = "2024-09-01"
 	end          = "2024-11-01"
@@ -23,4 +24,14 @@ var (
 func TestMain(m *testing.M) {
 	odas.SetLocalMode()
 	os.Exit(m.Run())
+}
+
+func TestService_Token(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := auth.NewTokenRequest(accessId, accessKey)
+	var r auth.TokenResponse
+	err := iam.Do(req, &r)
+	if err != nil {
+		t.Fatal(err)
+	}
 }

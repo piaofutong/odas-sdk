@@ -24,6 +24,24 @@ func TestService_TerminalPassSummary(t *testing.T) {
 	}
 }
 
+func TestService_TerminalPassSummaryGroupLid(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := report.NewTerminalPassSummaryGroupLidReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	}, report.WithTerminalType("1,2,4,19,20,46"))
+	var r report.TerminalPassSummaryGroupLidResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
 func TestService_ReportTicketList(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
 	req := report.NewTicketListReq(&odas.Req{

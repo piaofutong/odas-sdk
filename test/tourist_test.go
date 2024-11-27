@@ -78,7 +78,14 @@ func TestService_GroupList(t *testing.T) {
 
 func TestService_InoutSummary(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewSummaryReq(start, end, sid, 42, true)
+	req := tourist.NewSummaryReq(
+		tourist.WithStart(start),
+		tourist.WithEnd(end),
+		tourist.WithSid(sid),
+		tourist.WithGid(gid),
+		tourist.WithDateType(0),
+		tourist.WithNoAmend(),
+	)
 	var r tourist.InoutSummaryResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
