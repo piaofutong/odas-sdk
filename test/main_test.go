@@ -10,7 +10,7 @@ import (
 var (
 	accessId     = "abcdefg"
 	accessKey    = "abcdefg"
-	token        = "999d432ba819b623c14d3a728b8f55d1818672b4"
+	token        = "c72452ef5ca27ab494b67707cc99fe3d96a4c19c"
 	sid          = 3385
 	start        = "2024-09-01"
 	end          = "2024-11-01"

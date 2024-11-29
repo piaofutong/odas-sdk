@@ -95,3 +95,31 @@ func TestService_ToiSummary(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestService_PrebookingByType(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := order.NewPreBookingByTypeReq(odas.DateRangeReq{
+		Sid:   sid,
+		Start: start,
+		End:   end,
+	}, order.WithOrderType(0), order.WithLid(lid), order.WithExcludeLid(excludeLid))
+	var r order.PreBookingByTypeResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestService_PrebookingSummary(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := order.NewPreBookingByTypeReq(odas.DateRangeReq{
+		Sid:   sid,
+		Start: start,
+		End:   end,
+	}, order.WithOrderType(0), order.WithLid(lid), order.WithExcludeLid(excludeLid))
+	var r order.PreBookingSummaryResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
