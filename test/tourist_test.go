@@ -3,6 +3,7 @@ package test
 import (
 	"github.com/piaofutong/odas-sdk/odas"
 	"github.com/piaofutong/odas-sdk/odas/tourist"
+	"strconv"
 	"testing"
 )
 
@@ -76,13 +77,30 @@ func TestService_GroupList(t *testing.T) {
 	}
 }
 
-func TestService_InoutSummary(t *testing.T) {
+func TestService_InoutSummaryByTime(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewSummaryReq(
+	req := tourist.NewSummaryByTimeReq(
 		tourist.WithStart(start),
 		tourist.WithEnd(end),
 		tourist.WithSid(sid),
-		tourist.WithGid(gid),
+		tourist.WithGid(strconv.Itoa(gid)),
+		tourist.WithDateType(0),
+		tourist.WithNoAmend(),
+	)
+	var r tourist.InoutSummaryResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}
+
+func TestService_InoutSummaryByDate(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := tourist.NewSummaryByDateReq(
+		tourist.WithStart(start),
+		tourist.WithEnd(end),
+		tourist.WithSid(sid),
+		tourist.WithGid(strconv.Itoa(gid)),
 		tourist.WithDateType(0),
 		tourist.WithNoAmend(),
 	)
