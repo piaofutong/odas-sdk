@@ -10,7 +10,7 @@ import (
 var (
 	accessId     = "abcdefg"
 	accessKey    = "abcdefg"
-	token        = "c72452ef5ca27ab494b67707cc99fe3d96a4c19c"
+	token        = "702e396f933cc1a01bcdb9f080bf05aea47440ce"
 	sid          = 3385
 	start        = "2024-09-01"
 	end          = "2024-11-01"
@@ -18,7 +18,7 @@ var (
 	endCompare   = "2024-09-01"
 	lid          = "116157,116155"
 	excludeLid   = "116157,116156"
-	gid          = 2
+	gid          = 12
 )
 
 func TestMain(m *testing.M) {
