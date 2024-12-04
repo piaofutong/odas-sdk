@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"fmt"
+	"log/slog"
 	"net/url"
 )
 
@@ -24,5 +25,14 @@ func (s *Signature) Sign() string {
 	encoded := values.Encode()
 	sum := md5.Sum([]byte(encoded))
 	sign := fmt.Sprintf("%x", sum[:])
+	slog.With(
+		slog.String("encoded", encoded),
+		slog.String("uri", s.Uri),
+		slog.String("method", s.Method),
+		slog.String("token", s.Token),
+		slog.String("timestamp", s.Timestamp),
+		slog.String("secret", s.AccessKey),
+		slog.String("sign", sign),
+	).Info("请求sign的所有参数")
 	return sign
 }
