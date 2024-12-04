@@ -52,7 +52,7 @@ func (r *RequestBuilder) Build(req IRequest) (*http.Request, error) {
 			Method:    req.Method(),
 			Uri:       uri,
 			Token:     r.token,
-			Timestamp: strconv.Itoa(int(time.Now().UnixMilli())),
+			Timestamp: timestamp,
 		}
 		request.Header.Set("X-SIGNATURE", signature.Sign())
 	}
