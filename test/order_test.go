@@ -71,7 +71,7 @@ func TestService_Summary(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, true)
+	}, order.WithOrderCompare())
 	var r order.SummaryResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {

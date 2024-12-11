@@ -9,25 +9,27 @@ import (
 // SexAgeSummaryByVerifyReq 性别年龄分布(验证维度)
 type SexAgeSummaryByVerifyReq struct {
 	odas.Req
-	Province string `json:"province"`
-	Unknown  bool   `json:"unknown"`
+	Options *SexAgeOptions
 }
 
-func NewSexAgeSummaryByVerifyReq(req *odas.Req, province string, unknown bool) *SexAgeSummaryByVerifyReq {
+func NewSexAgeSummaryByVerifyReq(req *odas.Req, opt ...SexAgeOption) *SexAgeSummaryByVerifyReq {
+	options := &SexAgeOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &SexAgeSummaryByVerifyReq{
-		Req:      *req,
-		Province: province,
-		Unknown:  unknown,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (r SexAgeSummaryByVerifyReq) Api() string {
 	params := r.Req.Params()
-	if r.Unknown {
-		params.Add("unknown", strconv.FormatBool(r.Unknown))
+	if r.Options.Unknown {
+		params.Add("unknown", strconv.FormatBool(r.Options.Unknown))
 	}
-	if r.Province != "" {
-		params.Add("province", r.Province)
+	if r.Options.Province != "" {
+		params.Add("province", r.Options.Province)
 	}
 	return fmt.Sprintf("/v4/portrait/ageSummaryByVerify?%s", params.Encode())
 }

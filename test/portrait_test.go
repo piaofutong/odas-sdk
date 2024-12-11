@@ -19,7 +19,7 @@ func TestService_City(t *testing.T) {
 	}, &odas.DateRangeCompareReq{
 		CompareStart: startCompare,
 		CompareEnd:   endCompare,
-	}, "福建省", true, 10)
+	}, portrait.WithCityLimit(10), portrait.WithCityUnknown(true), portrait.WithCityProvince("福建省"))
 	var r []*portrait.CityRankResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -40,7 +40,7 @@ func TestService_CityByVerify(t *testing.T) {
 	}, &odas.DateRangeCompareReq{
 		CompareStart: startCompare,
 		CompareEnd:   endCompare,
-	}, "福建省", true, 10)
+	}, portrait.WithCityLimit(10), portrait.WithCityUnknown(true), portrait.WithCityProvince("福建省"))
 	var r []*portrait.CityRankResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -58,7 +58,7 @@ func TestService_Fellow(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, "福建省")
+	}, portrait.WithFellowProvince("福建省"))
 	var r portrait.FellowResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -76,7 +76,7 @@ func TestService_PaymentMethod(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, "福建省", 10)
+	}, portrait.WithPaymentMethodLimit(10), portrait.WithPaymentMethodProvince("福建省"))
 	var r []*portrait.PaymentMethodResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -97,7 +97,7 @@ func TestService_Province(t *testing.T) {
 	}, &odas.DateRangeCompareReq{
 		CompareStart: startCompare,
 		CompareEnd:   endCompare,
-	}, 10, true)
+	}, portrait.WithProvinceLimit(10), portrait.WithProvinceUnknown(true))
 	var r []*portrait.ProvinceRankResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -115,7 +115,7 @@ func TestService_SexAgeSummary(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, "福建省", true)
+	}, portrait.WithSexAgeUnknown(true), portrait.WithSexAgeProvince("福建省"))
 	var r portrait.AgeSummaryResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -136,7 +136,7 @@ func TestService_ProvinceByVerify(t *testing.T) {
 	}, &odas.DateRangeCompareReq{
 		CompareStart: startCompare,
 		CompareEnd:   endCompare,
-	}, 10, true)
+	}, portrait.WithProvinceLimit(10), portrait.WithProvinceUnknown(true))
 	var r []*portrait.ProvinceRankResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -154,7 +154,7 @@ func TestService_SexAgeSummaryByVerify(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, "福建省", true)
+	}, portrait.WithSexAgeUnknown(true), portrait.WithSexAgeProvince("福建省"))
 	var r portrait.AgeSummaryResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {

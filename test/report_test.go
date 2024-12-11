@@ -77,3 +77,21 @@ func TestService_VerifiedSummary(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestService_VerifiedSummaryHour(t *testing.T) {
+	iam := odas.NewIAM(accessId, accessKey)
+	req := report.NewVerifiedSummaryHourReq(&odas.Req{
+		DateRangeReq: odas.DateRangeReq{
+			Sid:   sid,
+			Start: start,
+			End:   end,
+		},
+		Lid:        lid,
+		ExcludeLid: excludeLid,
+	})
+	var r report.VerifiedSummaryHourResponse
+	err := iam.Do(req, &r, odas.WithToken(token))
+	if err != nil {
+		t.Fatal(err)
+	}
+}

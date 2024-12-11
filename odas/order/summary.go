@@ -6,20 +6,38 @@ import (
 	"strconv"
 )
 
+type SummaryOptions struct {
+	Compare bool
+}
+
+type SummaryOption func(options *SummaryOptions)
+
+func WithOrderCompare() SummaryOption {
+	return func(options *SummaryOptions) {
+		options.Compare = true
+	}
+}
+
 // Summary 订单单量、票数、金额及同环比数据
 type Summary struct {
 	*odas.Req
-	Compare bool `json:"compare"`
+	Options *SummaryOptions
 }
 
-func NewSummaryReq(req *odas.Req, compare bool) *Summary {
-	return &Summary{Req: req, Compare: compare}
+func NewSummaryReq(req *odas.Req, opt ...SummaryOption) *Summary {
+	options := &SummaryOptions{}
+	for _, p := range opt {
+		p(options)
+	}
+	return &Summary{
+		Req: req, Options: options,
+	}
 }
 
 func (r *Summary) Api() string {
 	params := r.Req.Params()
-	if r.Compare {
-		params.Add("compare", strconv.FormatBool(r.Compare))
+	if r.Options.Compare {
+		params.Add("compare", strconv.FormatBool(r.Options.Compare))
 	}
 	return fmt.Sprintf("/v4/order/summary?%s", params.Encode())
 }

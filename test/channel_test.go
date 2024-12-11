@@ -34,7 +34,7 @@ func TestService_OrderFullChannel(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, 10)
+	}, channel.WithLimit(10))
 	var r channel.OrderFullChannelResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -70,7 +70,7 @@ func TestService_OrderSecondaryChannel(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, 1, 10)
+	}, channel.WithSecondaryChannelLimit(10), channel.WithSecondaryChannelClassId(1))
 	var r channel.OrderFullChannelResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {

@@ -9,30 +9,31 @@ import (
 // LocalReq 客流来源TopN
 type LocalReq struct {
 	odas.Req
-	Province string `json:"province"`
-	Limit    int    `json:"limit"`
-	Unknown  bool   `json:"unknown"`
+	Options *LocalOptions
 }
 
-func NewLocalReq(req *odas.Req, province string, limit int, unknown bool) *LocalReq {
+func NewLocalReq(req *odas.Req, opt ...LocalOption) *LocalReq {
+	options := &LocalOptions{}
+	for _, p := range opt {
+		p(options)
+	}
+
 	return &LocalReq{
-		Req:      *req,
-		Province: province,
-		Limit:    limit,
-		Unknown:  unknown,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (l LocalReq) Api() string {
 	params := l.Req.Params()
-	if l.Limit > 0 {
-		params.Add("limit", strconv.Itoa(l.Limit))
+	if l.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(l.Options.Limit))
 	}
-	if l.Unknown {
-		params.Add("unknown", strconv.FormatBool(l.Unknown))
+	if l.Options.Unknown {
+		params.Add("unknown", strconv.FormatBool(l.Options.Unknown))
 	}
-	if l.Province != "" {
-		params.Add("province", l.Province)
+	if l.Options.Province != "" {
+		params.Add("province", l.Options.Province)
 	}
 	return fmt.Sprintf("/v4/tourist/touristLocal?%s", params.Encode())
 }

@@ -6,35 +6,55 @@ import (
 	"strconv"
 )
 
+type ProvinceOptions struct {
+	Limit   int  `json:"limit"`
+	Unknown bool `json:"unknown"`
+}
+
+type ProvinceOption func(options *ProvinceOptions)
+
+func WithProvinceLimit(limit int) ProvinceOption {
+	return func(options *ProvinceOptions) {
+		options.Limit = limit
+	}
+}
+
+func WithProvinceUnknown(unknown bool) ProvinceOption {
+	return func(options *ProvinceOptions) {
+		options.Unknown = unknown
+	}
+}
+
 // ProvinceReq 省客源排行
 type ProvinceReq struct {
 	odas.Req
 	odas.DateRangeCompareReq
-	Limit   int  `json:"limit"`
-	Unknown bool `json:"unknown"`
+	Options *ProvinceOptions
 }
 
 func NewProvinceReq(
 	req *odas.Req,
 	dateRangeCompareReq *odas.DateRangeCompareReq,
-	limit int,
-	unknown bool,
+	opt ...ProvinceOption,
 ) *ProvinceReq {
+	options := &ProvinceOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &ProvinceReq{
 		Req:                 *req,
 		DateRangeCompareReq: *dateRangeCompareReq,
-		Limit:               limit,
-		Unknown:             unknown,
+		Options:             options,
 	}
 }
 
 func (r ProvinceReq) Api() string {
 	params := r.Req.Params()
-	if r.Limit > 0 {
-		params.Add("limit", strconv.Itoa(r.Limit))
+	if r.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(r.Options.Limit))
 	}
-	if r.Unknown {
-		params.Add("unknown", strconv.FormatBool(r.Unknown))
+	if r.Options.Unknown {
+		params.Add("unknown", strconv.FormatBool(r.Options.Unknown))
 	}
 	if r.CompareStart != "" {
 		params.Add("compareStart", r.CompareStart)

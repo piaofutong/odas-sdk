@@ -157,7 +157,7 @@ func TestService_TouristLocal(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, "福建省", 10, true)
+	}, tourist.WithLocalLimit(10), tourist.WithLocalProvince("福建省"), tourist.WithLocalUnknown(true))
 	var r tourist.LocalResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -175,7 +175,7 @@ func TestService_TouristLocalByVerify(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, "福建省", 10, true)
+	}, tourist.WithLocalLimit(10), tourist.WithLocalProvince("福建省"), tourist.WithLocalUnknown(true))
 	var r tourist.LocalResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
