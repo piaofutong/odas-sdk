@@ -6,38 +6,62 @@ import (
 	"strconv"
 )
 
-// CityReq 市客源排行
-type CityReq struct {
-	odas.Req
-	odas.DateRangeCompareReq
+type CityOptions struct {
 	Province string `json:"province"`
 	Unknown  bool   `json:"unknown"`
 	Limit    int    `json:"limit"`
 }
 
+type CityOption func(options *CityOptions)
+
+func WithCityLimit(limit int) CityOption {
+	return func(options *CityOptions) {
+		options.Limit = limit
+	}
+}
+
+func WithCityUnknown(unknown bool) CityOption {
+	return func(options *CityOptions) {
+		options.Unknown = unknown
+	}
+}
+
+func WithCityProvince(province string) CityOption {
+	return func(options *CityOptions) {
+		options.Province = province
+	}
+}
+
+// CityReq 市客源排行
+type CityReq struct {
+	odas.Req
+	odas.DateRangeCompareReq
+	Options *CityOptions
+}
+
 func NewCityReq(
 	req *odas.Req,
 	dateRangeCompareReq *odas.DateRangeCompareReq,
-	province string,
-	unknown bool,
-	limit int,
+	opt ...CityOption,
 ) *CityReq {
+	options := &CityOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &CityReq{
 		Req:                 *req,
 		DateRangeCompareReq: *dateRangeCompareReq,
-		Province:            province,
-		Unknown:             unknown,
-		Limit:               limit,
+		Options:             options,
 	}
 }
 
 func (r CityReq) Api() string {
 	params := r.Req.Params()
-	if r.Unknown {
-		params.Add("unknown", strconv.FormatBool(r.Unknown))
+	if r.Options.Unknown {
+		params.Add("unknown", strconv.FormatBool(r.Options.Unknown))
 	}
-	if r.Limit > 0 {
-		params.Add("limit", strconv.Itoa(r.Limit))
+	if r.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(r.Options.Limit))
 	}
 	if r.CompareStart != "" {
 		params.Add("compareStart", r.CompareStart)
@@ -46,8 +70,8 @@ func (r CityReq) Api() string {
 		params.Add("compareEnd", r.CompareEnd)
 	}
 
-	if r.Province != "" {
-		params.Add("province", r.Province)
+	if r.Options.Province != "" {
+		params.Add("province", r.Options.Province)
 	}
 	return fmt.Sprintf("/v4/portrait/city?%s", params.Encode())
 }

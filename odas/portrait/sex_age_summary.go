@@ -6,28 +6,49 @@ import (
 	"strconv"
 )
 
-// SexAgeSummaryReq 性别年龄分布
-type SexAgeSummaryReq struct {
-	odas.Req
+type SexAgeOptions struct {
 	Province string `json:"province"`
 	Unknown  bool   `json:"unknown"`
 }
 
-func NewSexAgeSummaryReq(req *odas.Req, province string, unknown bool) *SexAgeSummaryReq {
+type SexAgeOption func(options *SexAgeOptions)
+
+func WithSexAgeUnknown(unknown bool) SexAgeOption {
+	return func(options *SexAgeOptions) {
+		options.Unknown = unknown
+	}
+}
+
+func WithSexAgeProvince(province string) SexAgeOption {
+	return func(options *SexAgeOptions) {
+		options.Province = province
+	}
+}
+
+// SexAgeSummaryReq 性别年龄分布
+type SexAgeSummaryReq struct {
+	odas.Req
+	Options *SexAgeOptions
+}
+
+func NewSexAgeSummaryReq(req *odas.Req, opt ...SexAgeOption) *SexAgeSummaryReq {
+	options := &SexAgeOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &SexAgeSummaryReq{
-		Req:      *req,
-		Province: province,
-		Unknown:  unknown,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (r SexAgeSummaryReq) Api() string {
 	params := r.Req.Params()
-	if r.Unknown {
-		params.Add("unknown", strconv.FormatBool(r.Unknown))
+	if r.Options.Unknown {
+		params.Add("unknown", strconv.FormatBool(r.Options.Unknown))
 	}
-	if r.Province != "" {
-		params.Add("province", r.Province)
+	if r.Options.Province != "" {
+		params.Add("province", r.Options.Province)
 	}
 	return fmt.Sprintf("/v4/portrait/ageSummary?%s", params.Encode())
 }

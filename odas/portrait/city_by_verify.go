@@ -10,34 +10,32 @@ import (
 type CityByVerifyReq struct {
 	odas.Req
 	odas.DateRangeCompareReq
-	Province string `json:"province"`
-	Unknown  bool   `json:"unknown"`
-	Limit    int    `json:"limit"`
+	Options *CityOptions
 }
 
 func NewCityByVerifyReq(
 	req *odas.Req,
 	dateRangeCompareReq *odas.DateRangeCompareReq,
-	province string,
-	unknown bool,
-	limit int,
+	opt ...CityOption,
 ) *CityByVerifyReq {
+	options := &CityOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &CityByVerifyReq{
 		Req:                 *req,
 		DateRangeCompareReq: *dateRangeCompareReq,
-		Province:            province,
-		Unknown:             unknown,
-		Limit:               limit,
+		Options:             options,
 	}
 }
 
 func (r CityByVerifyReq) Api() string {
 	params := r.Req.Params()
-	if r.Unknown {
-		params.Add("unknown", strconv.FormatBool(r.Unknown))
+	if r.Options.Unknown {
+		params.Add("unknown", strconv.FormatBool(r.Options.Unknown))
 	}
-	if r.Limit > 0 {
-		params.Add("limit", strconv.Itoa(r.Limit))
+	if r.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(r.Options.Limit))
 	}
 	if r.CompareStart != "" {
 		params.Add("compareStart", r.CompareStart)
@@ -46,8 +44,8 @@ func (r CityByVerifyReq) Api() string {
 		params.Add("compareEnd", r.CompareEnd)
 	}
 
-	if r.Province != "" {
-		params.Add("province", r.Province)
+	if r.Options.Province != "" {
+		params.Add("province", r.Options.Province)
 	}
 	return fmt.Sprintf("/v4/portrait/cityByVerify?%s", params.Encode())
 }

@@ -6,22 +6,39 @@ import (
 	"strconv"
 )
 
-type OrderFullChannelReq struct {
-	odas.Req
-	Limit int `json:"limit"`
+type LimitOptions struct {
+	Limit int
 }
 
-func NewOrderFullChannelReq(req *odas.Req, limit int) *OrderFullChannelReq {
+type LimitOption func(options *LimitOptions)
+
+func WithLimit(limit int) LimitOption {
+	return func(options *LimitOptions) {
+		options.Limit = limit
+	}
+}
+
+type OrderFullChannelReq struct {
+	odas.Req
+	Options *LimitOptions
+}
+
+func NewOrderFullChannelReq(req *odas.Req, opt ...LimitOption) *OrderFullChannelReq {
+	options := &LimitOptions{}
+	for _, p := range opt {
+		p(options)
+	}
+
 	return &OrderFullChannelReq{
-		Req:   *req,
-		Limit: limit,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (o OrderFullChannelReq) Api() string {
 	params := o.Req.Params()
-	if o.Limit > 0 {
-		params.Add("limit", strconv.Itoa(o.Limit))
+	if o.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(o.Options.Limit))
 	}
 	return fmt.Sprintf("/v4/channel/orderFullChannel?%s", params.Encode())
 }

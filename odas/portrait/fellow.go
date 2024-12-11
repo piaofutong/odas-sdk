@@ -5,23 +5,39 @@ import (
 	"github.com/piaofutong/odas-sdk/odas"
 )
 
+type FellowOptions struct {
+	Province string
+}
+
+type FellowOption func(options *FellowOptions)
+
+func WithFellowProvince(province string) FellowOption {
+	return func(options *FellowOptions) {
+		options.Province = province
+	}
+}
+
 // FellowReq 同行人数
 type FellowReq struct {
 	odas.Req
-	Province string `json:"province"`
+	Options *FellowOptions
 }
 
-func NewFellowReq(req *odas.Req, province string) *FellowReq {
+func NewFellowReq(req *odas.Req, opt ...FellowOption) *FellowReq {
+	options := &FellowOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &FellowReq{
-		Req:      *req,
-		Province: province,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (r *FellowReq) Api() string {
 	params := r.Req.Params()
-	if r.Province != "" {
-		params.Add("province", r.Province)
+	if r.Options.Province != "" {
+		params.Add("province", r.Options.Province)
 	}
 	return fmt.Sprintf("/v4/portrait/fellow?%s", params.Encode())
 }

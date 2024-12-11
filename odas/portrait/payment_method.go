@@ -6,28 +6,49 @@ import (
 	"strconv"
 )
 
-// PaymentMethodReq 支付渠道
-type PaymentMethodReq struct {
-	odas.Req
+type PayMethodOptions struct {
 	Province string `json:"province"`
 	Limit    int    `json:"limit"`
 }
 
-func NewPaymentMethodReq(req *odas.Req, province string, limit int) *PaymentMethodReq {
+type PaymentMethodOption func(options *PayMethodOptions)
+
+func WithPaymentMethodLimit(limit int) PaymentMethodOption {
+	return func(options *PayMethodOptions) {
+		options.Limit = limit
+	}
+}
+
+func WithPaymentMethodProvince(province string) PaymentMethodOption {
+	return func(options *PayMethodOptions) {
+		options.Province = province
+	}
+}
+
+// PaymentMethodReq 支付渠道
+type PaymentMethodReq struct {
+	odas.Req
+	Options *PayMethodOptions
+}
+
+func NewPaymentMethodReq(req *odas.Req, opt ...PaymentMethodOption) *PaymentMethodReq {
+	options := &PayMethodOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &PaymentMethodReq{
-		Req:      *req,
-		Province: province,
-		Limit:    limit,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (r PaymentMethodReq) Api() string {
 	params := r.Req.Params()
-	if r.Limit > 0 {
-		params.Add("limit", strconv.Itoa(r.Limit))
+	if r.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(r.Options.Limit))
 	}
-	if r.Province != "" {
-		params.Add("province", r.Province)
+	if r.Options.Province != "" {
+		params.Add("province", r.Options.Province)
 	}
 	return fmt.Sprintf("/v4/portrait/paymentMethod?%s", params.Encode())
 }

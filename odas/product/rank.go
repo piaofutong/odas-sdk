@@ -6,23 +6,39 @@ import (
 	"strconv"
 )
 
+type RankOptions struct {
+	Limit int
+}
+
+type RankOption func(options *RankOptions)
+
+func WithRankLimit(limit int) RankOption {
+	return func(options *RankOptions) {
+		options.Limit = limit
+	}
+}
+
 // RankReq 产品排行数据
 type RankReq struct {
 	odas.Req
-	Limit int `json:"limit"`
+	Options *RankOptions
 }
 
-func NewRankReq(req *odas.Req, limit int) *RankReq {
+func NewRankReq(req *odas.Req, opt ...RankOption) *RankReq {
+	options := &RankOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &RankReq{
-		Req:   *req,
-		Limit: limit,
+		Req:     *req,
+		Options: options,
 	}
 }
 
 func (r RankReq) Api() string {
 	params := r.Req.Params()
-	if r.Limit > 0 {
-		params.Add("limit", strconv.Itoa(r.Limit))
+	if r.Options.Limit > 0 {
+		params.Add("limit", strconv.Itoa(r.Options.Limit))
 	}
 	return fmt.Sprintf("/v4/product/rank?%s", params.Encode())
 }

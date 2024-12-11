@@ -16,7 +16,7 @@ func TestService_Rank(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, 10)
+	}, product.WithRankLimit(10))
 	var r []*product.RankResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
@@ -34,7 +34,7 @@ func TestService_SalesDetail(t *testing.T) {
 		},
 		Lid:        lid,
 		ExcludeLid: excludeLid,
-	}, []int{2598429, 347718})
+	}, product.WithSalesDetailTicketId([]int{2598429, 347718}))
 	var r []*product.SalesDetailResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {

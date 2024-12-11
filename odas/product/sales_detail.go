@@ -6,16 +6,32 @@ import (
 	"net/http"
 )
 
-// SalesDetailReq 根据票数据获取渠道以及销售额每日数据
-type SalesDetailReq struct {
-	odas.Req
+type SalesDetailOptions struct {
 	TicketId []int `json:"ticketId"`
 }
 
-func NewSalesDetailReq(req *odas.Req, ticketId []int) *SalesDetailReq {
+type SalesDetailOption func(options *SalesDetailOptions)
+
+func WithSalesDetailTicketId(ticketId []int) SalesDetailOption {
+	return func(options *SalesDetailOptions) {
+		options.TicketId = ticketId
+	}
+}
+
+// SalesDetailReq 根据票数据获取渠道以及销售额每日数据
+type SalesDetailReq struct {
+	odas.Req
+	*SalesDetailOptions
+}
+
+func NewSalesDetailReq(req *odas.Req, opt ...SalesDetailOption) *SalesDetailReq {
+	options := &SalesDetailOptions{}
+	for _, p := range opt {
+		p(options)
+	}
 	return &SalesDetailReq{
-		Req:      *req,
-		TicketId: ticketId,
+		Req:                *req,
+		SalesDetailOptions: options,
 	}
 }
 
