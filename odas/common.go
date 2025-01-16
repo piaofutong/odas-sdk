@@ -10,6 +10,7 @@ type Req struct {
 	DateRangeReq
 	Lid        string `json:"lid"`
 	ExcludeLid string `json:"excludeLid"`
+	ExcludeTid string `json:"excludeTid"`
 	DateType   int    `json:"dateType"`
 	OrderType  int    `json:"orderType"`
 }
@@ -26,6 +27,9 @@ func (r Req) Params() url.Values {
 	}
 	if r.ExcludeLid != "" {
 		params.Add("excludeLid", r.ExcludeLid)
+	}
+	if r.ExcludeTid != "" {
+		params.Add("excludeTid", r.ExcludeTid)
 	}
 	if r.Sid > 0 {
 		params.Add("sid", strconv.Itoa(r.Sid))
