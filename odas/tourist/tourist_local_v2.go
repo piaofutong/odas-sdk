@@ -8,9 +8,9 @@ import (
 )
 
 type LocalV2Options struct {
-	Limit   int    `json:"limit"`
-	Unknown bool   `json:"unknown"`
-	GroupBy string `json:"groupBy"`
+	Limit      int    `json:"limit"`
+	Unknown    bool   `json:"unknown"`
+	RegionType string `json:"regionType"`
 }
 
 type LocalV2Option func(options *LocalV2Options)
@@ -23,9 +23,9 @@ type LocalV2Req struct {
 	City     string
 }
 
-func WithGroupBy(groupBy string) LocalV2Option {
+func WithRegionType(regionType string) LocalV2Option {
 	return func(options *LocalV2Options) {
-		options.GroupBy = groupBy
+		options.RegionType = regionType
 	}
 }
 func NewLocalV2Req(req *odas.Req, province string, city string, opt ...LocalV2Option) *LocalV2Req {
@@ -56,8 +56,8 @@ func (l LocalV2Req) Api() string {
 	if l.City != "" {
 		params.Add("city", l.City)
 	}
-	if l.Options.GroupBy != "" {
-		params.Add("groupBy", l.Options.GroupBy)
+	if l.Options.RegionType != "" {
+		params.Add("regionType", l.Options.RegionType)
 	}
 	return fmt.Sprintf("/v4/tourist/touristLocalV2?%s", params.Encode())
 }
