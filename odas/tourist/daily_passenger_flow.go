@@ -2,8 +2,9 @@ package tourist
 
 import (
 	"fmt"
-	"github.com/piaofutong/odas-sdk/odas"
 	"strconv"
+
+	"github.com/piaofutong/odas-sdk/odas"
 )
 
 type DailyPassengerFlowReq struct {
@@ -27,8 +28,8 @@ func (r DailyPassengerFlowReq) Api() string {
 }
 
 type PassengerFlowByDateResponse struct {
-	Total int `json:"total"`
-	List  []*PassengerFlowByDateList
+	Total int                        `json:"total"`
+	List  []*PassengerFlowByDateList `json:"list"`
 }
 
 type PassengerFlowByDateList struct {
