@@ -23,5 +23,6 @@ func (h SaleTotalByTimeRangeReq) Api() string {
 }
 
 type SaleTotalByTimeRangeResponse struct {
-	TotalAmount int `json:"totalAmount"`
+	TotalAmount   int `json:"totalAmount"`
+	TotalOrderNum int `json:"totalOrderNum"`
 }
