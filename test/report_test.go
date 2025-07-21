@@ -1,9 +1,10 @@
 package test
 
 import (
-	"github.com/piaofutong/odas-sdk/odas"
-	"github.com/piaofutong/odas-sdk/odas/report"
 	"testing"
+
+	"github.com/piaofutong/odas-sdk/odas"
+	"github.com/piaofutong/odas-sdk/odas/request/v4/report"
 )
 
 func TestService_TerminalPassSummary(t *testing.T) {
@@ -54,24 +55,6 @@ func TestService_ReportTicketList(t *testing.T) {
 		ExcludeLid: excludeLid,
 	}, 10, "2598429,347718")
 	var r report.TicketListResponse
-	err := iam.Do(req, &r, odas.WithToken(token))
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
-func TestService_VerifiedSummary(t *testing.T) {
-	iam := odas.NewIAM(accessId, accessKey)
-	req := report.NewVerifiedSummaryReq(&odas.Req{
-		DateRangeReq: odas.DateRangeReq{
-			Sid:   sid,
-			Start: start,
-			End:   end,
-		},
-		Lid:        lid,
-		ExcludeLid: excludeLid,
-	})
-	var r report.VerifiedSummaryResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
 		t.Fatal(err)

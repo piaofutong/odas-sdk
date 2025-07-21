@@ -1,9 +1,10 @@
 package test
 
 import (
-	"github.com/piaofutong/odas-sdk/odas"
-	"github.com/piaofutong/odas-sdk/odas/channel"
 	"testing"
+
+	"github.com/piaofutong/odas-sdk/odas"
+	"github.com/piaofutong/odas-sdk/odas/request/v4/channel"
 )
 
 func TestService_OrderChannel(t *testing.T) {

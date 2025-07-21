@@ -1,10 +1,11 @@
 package test
 
 import (
-	"github.com/piaofutong/odas-sdk/odas"
-	"github.com/piaofutong/odas-sdk/odas/auth"
 	"os"
 	"testing"
+
+	"github.com/piaofutong/odas-sdk/odas"
+	"github.com/piaofutong/odas-sdk/odas/auth"
 )
 
 var (

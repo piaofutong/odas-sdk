@@ -2,6 +2,7 @@ package report
 
 import (
 	"fmt"
+
 	"github.com/piaofutong/odas-sdk/odas"
 )
 
@@ -29,4 +30,11 @@ type VerifiedSummaryHourResponse struct {
 type VerifiedSummaryHourList struct {
 	Hour string `json:"hour"`
 	VerifiedSummaryResponse
+}
+
+type VerifiedSummaryResponse struct {
+	odas.BaseReportSummaryVO
+	CalcTicketNum int     `json:"calcTicketNum"`
+	CalcOrderNum  int     `json:"calcOrderNum"`
+	CalcAmount    float64 `json:"calcAmount"`
 }

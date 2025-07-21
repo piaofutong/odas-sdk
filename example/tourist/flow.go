@@ -2,8 +2,9 @@ package tourist
 
 import (
 	"fmt"
+
 	"github.com/piaofutong/odas-sdk/odas"
-	"github.com/piaofutong/odas-sdk/odas/tourist"
+	tourist "github.com/piaofutong/odas-sdk/odas/request/v2/tourist"
 )
 
 func flow() {

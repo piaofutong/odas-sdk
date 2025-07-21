@@ -11,10 +11,11 @@ type IRequest interface {
 }
 
 type Response struct {
-	Code   int             `json:"code"`
-	Msg    string          `json:"msg"`
-	Result json.RawMessage `json:"result,omitempty"`
-	Data   json.RawMessage `json:"data,omitempty"`
+	Code    int             `json:"code"`
+	Msg     string          `json:"msg"`
+	Message string          `json:"message"`
+	Result  json.RawMessage `json:"result,omitempty"`
+	Data    json.RawMessage `json:"data,omitempty"`
 }
 
 func (o *Response) IsOk() bool {
@@ -26,6 +27,10 @@ func (o *Response) GetCode() int {
 }
 
 func (o *Response) GetMsg() string {
+	if o.Msg == "" {
+		return o.Message
+	}
+
 	return o.Msg
 }
 

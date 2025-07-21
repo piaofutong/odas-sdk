@@ -105,3 +105,15 @@ type InoutSummaryResponse struct {
 	Total InoutTotal   `json:"total"`
 	List  []*InoutList `json:"list"`
 }
+
+type InoutTotal struct {
+	In   int `json:"in"`
+	Out  int `json:"out"`
+	Hold int `json:"hold"`
+}
+
+type InoutList struct {
+	Time string `json:"time"`
+	In   int    `json:"in"`
+	Out  int    `json:"out"`
+}

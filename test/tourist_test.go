@@ -1,16 +1,18 @@
 package test
 
 import (
-	"github.com/piaofutong/odas-sdk/odas"
-	"github.com/piaofutong/odas-sdk/odas/tourist"
 	"strconv"
 	"testing"
+
+	"github.com/piaofutong/odas-sdk/odas"
+	touristV2 "github.com/piaofutong/odas-sdk/odas/request/v2/tourist"
+	"github.com/piaofutong/odas-sdk/odas/request/v4/tourist"
 )
 
 func TestService_FlowByDevice(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewFlowByDeviceReq("5da80a7dc69bdcc503ec5da69888f8c1", 9)
-	var r tourist.FlowByDeviceResponse
+	req := touristV2.NewFlowByDeviceReq("5da80a7dc69bdcc503ec5da69888f8c1", 1)
+	var r touristV2.FlowByDeviceResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
 		t.Fatal(err)
@@ -19,8 +21,8 @@ func TestService_FlowByDevice(t *testing.T) {
 
 func TestService_FlowByGids(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewFlowByGIdsReq("42,43", "2024-11-22")
-	var r tourist.FlowByGIdsResponse
+	req := touristV2.NewFlowByGIdsReq("42,43", "2024-11-22")
+	var r touristV2.FlowByGIdsResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
 		t.Fatal(err)
@@ -29,8 +31,8 @@ func TestService_FlowByGids(t *testing.T) {
 
 func TestService_FlowBySid(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewFlowBySidReq("3385")
-	var r tourist.FlowBySidResponse
+	req := touristV2.NewFlowBySidReq("3385")
+	var r touristV2.FlowBySidResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
 		t.Fatal(err)
@@ -59,8 +61,8 @@ func TestService_ForecastPassengerFlowSummary(t *testing.T) {
 
 func TestService_GroupById(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewGroupByIdReq(42)
-	var r tourist.GroupByIdResponse
+	req := touristV2.NewGroupByIdReq(42)
+	var r touristV2.GroupByIdResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
 		t.Fatal(err)
@@ -69,8 +71,8 @@ func TestService_GroupById(t *testing.T) {
 
 func TestService_GroupList(t *testing.T) {
 	iam := odas.NewIAM(accessId, accessKey)
-	req := tourist.NewGroupListReq(sid)
-	var r []*tourist.GroupListResponse
+	req := touristV2.NewGroupListReq(sid)
+	var r []*touristV2.GroupListResponse
 	err := iam.Do(req, &r, odas.WithToken(token))
 	if err != nil {
 		t.Fatal(err)

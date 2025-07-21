@@ -3,11 +3,12 @@ package odas
 import (
 	"bytes"
 	"fmt"
-	"github.com/piaofutong/odas-sdk/utils"
 	"net/http"
 	"net/url"
 	"strconv"
 	"time"
+
+	"github.com/piaofutong/odas-sdk/odas/utils"
 )
 
 type IBuilder interface {

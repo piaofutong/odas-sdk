@@ -2,7 +2,7 @@ package test
 
 import (
 	"github.com/piaofutong/odas-sdk/odas"
-	"github.com/piaofutong/odas-sdk/odas/order"
+	"github.com/piaofutong/odas-sdk/odas/request/v4/order"
 	"testing"
 )
 
