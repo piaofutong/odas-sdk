@@ -208,11 +208,19 @@ func (c *SliceTypeComparer) CompareWithOptions(expected, actual reflect.Value, f
 	// 检查切片元素类型是否兼容
 	expectedElemType := expected.Type().Elem()
 	actualElemType := actual.Type().Elem()
-	
+
 	// 如果元素类型完全不同且不能相互转换，则认为是不同的
-	if expectedElemType != actualElemType && 
-		!expectedElemType.ConvertibleTo(actualElemType) && 
+	if expectedElemType != actualElemType &&
+		!expectedElemType.ConvertibleTo(actualElemType) &&
 		!actualElemType.ConvertibleTo(expectedElemType) {
+
+		for expectedElemType.Kind() == reflect.Ptr {
+			expectedElemType = expectedElemType.Elem()
+		}
+		for actualElemType.Kind() == reflect.Ptr {
+			actualElemType = actualElemType.Elem()
+		}
+
 		// 特殊处理：如果都是结构体类型，允许进行字段级比较
 		if expectedElemType.Kind() != reflect.Struct || actualElemType.Kind() != reflect.Struct {
 			result.Status = StatusDifferent

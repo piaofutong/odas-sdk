@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/piaofutong/odas-sdk/odas/request/common"
+	"github.com/piaofutong/odas-sdk/odas/common"
 	idsscommon "gitlab.12301.test/gopkg/idss-go-sdk/proto/gen/idss"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
