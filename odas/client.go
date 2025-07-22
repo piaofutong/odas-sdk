@@ -85,7 +85,17 @@ func (o *Client) Do(request *http.Request, v any) error {
 	}
 	defer func() { _ = response.Body.Close() }()
 	if response.StatusCode != http.StatusOK {
-		return fmt.Errorf("status code %d", response.StatusCode)
+		respBytes, err := io.ReadAll(response.Body)
+		if err != nil {
+			return fmt.Errorf("status code %d, body read error: %w", response.StatusCode, err)
+		}
+		var reply Response
+		err = json.Unmarshal(respBytes, &reply)
+		if err != nil {
+			return fmt.Errorf("status code %d, body unmarshal error: %w", response.StatusCode, err)
+		}
+
+		return fmt.Errorf("status code %d, error: %d, message: %s", response.StatusCode, reply.GetCode(), reply.GetMsg())
 	}
 	respBytes, err := io.ReadAll(response.Body)
 	if err != nil {
@@ -97,7 +107,7 @@ func (o *Client) Do(request *http.Request, v any) error {
 		return err
 	}
 	if !reply.IsOk() {
-		return fmt.Errorf("code %d, message: %s", reply.Code, reply.Msg)
+		return fmt.Errorf("code %d, message: %s", reply.Code, reply.GetMsg())
 	}
 	err = json.Unmarshal(reply.GetResult(), &v)
 	if err != nil {
