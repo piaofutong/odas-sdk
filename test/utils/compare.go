@@ -6,11 +6,13 @@ import (
 
 // CompareResponses 直接比较两个响应结构体，自动提取和比较相同字段
 func CompareResponses(t *testing.T, apiResp, grpcResp interface{}, testName string) {
+	t.Helper()
 	CompareResponsesWithExpectation(t, apiResp, grpcResp, testName, false)
 }
 
 // CompareResponsesWithExpectation 比较响应并支持指定是否期望有差异
 func CompareResponsesWithExpectation(t *testing.T, apiResp, grpcResp interface{}, testName string, expectDifference bool) {
+	t.Helper()
 	// 使用面向对象的比较器
 	comparator := NewStructComparator()
 	logger := NewTestLogger(t)

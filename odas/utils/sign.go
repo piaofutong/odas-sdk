@@ -17,6 +17,10 @@ type Signature struct {
 
 func (s *Signature) Sign() string {
 	values := url.Values{}
+
+	uri := s.Uri
+	uri, _ = url.PathUnescape(uri)
+
 	values.Add("method", s.Method)
 	values.Add("api", s.Uri)
 	values.Add("token", s.Token)
@@ -33,6 +37,6 @@ func (s *Signature) Sign() string {
 		slog.String("timestamp", s.Timestamp),
 		slog.String("secret", s.AccessKey),
 		slog.String("sign", sign),
-	).Debug("请求sign的所有参数")
+	).Info("请求sign的所有参数")
 	return sign
 }

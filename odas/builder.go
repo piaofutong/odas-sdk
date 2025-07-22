@@ -47,7 +47,7 @@ func (r *RequestBuilder) Build(req IRequest) (*http.Request, error) {
 		timestamp := strconv.Itoa(int(time.Now().UnixMilli()))
 		request.Header.Set("X-TOKEN", r.token)
 		request.Header.Set("X-TIMESTAMP", timestamp)
-		uri, _ := url.QueryUnescape(req.Api())
+		uri, _ := url.PathUnescape(req.Api())
 		signature := utils.Signature{
 			AccessKey: r.accessKey,
 			Method:    req.Method(),

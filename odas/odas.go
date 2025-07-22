@@ -50,10 +50,15 @@ const Ok = 0
 
 var baseURL = ProdBaseURL
 
+func SetBaseURL(url string) {
+	baseURL = url
+}
+
 func SetTestMode() {
 	baseURL = TestBaseURL
 }
 
+// SetLocalMode 设置本地模式，将基础URL切换为本地地址
 func SetLocalMode() {
 	baseURL = LocalBaseURL
 }

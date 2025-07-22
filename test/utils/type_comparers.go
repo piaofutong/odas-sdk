@@ -21,6 +21,22 @@ func (c *BasicTypeComparer) CompareWithOptions(expected, actual reflect.Value, f
 		Status: StatusEqual,
 	}
 
+	for actual.Type().Kind() == reflect.Ptr {
+		if actual.IsNil() {
+			actual = reflect.New(actual.Type().Elem())
+		}
+
+		actual = actual.Elem()
+	}
+
+	for expected.Type().Kind() == reflect.Ptr {
+		if expected.IsNil() {
+			expected = reflect.New(expected.Type().Elem())
+		}
+
+		expected = expected.Elem()
+	}
+
 	// 尝试转换为相同类型进行比较
 	if expected.Type().ConvertibleTo(actual.Type()) {
 		convertedExpected := expected.Convert(actual.Type())
@@ -38,6 +54,7 @@ func (c *BasicTypeComparer) CompareWithOptions(expected, actual reflect.Value, f
 		// 类型不可转换，直接比较字符串表示
 		expectedStr := fmt.Sprintf("%v", expected.Interface())
 		actualStr := fmt.Sprintf("%v", actual.Interface())
+
 		if expectedStr != actualStr {
 			result.Status = StatusDifferent
 			result.Difference = fmt.Sprintf("'%v' != '%v'", expected.Interface(), actual.Interface())
@@ -208,11 +225,19 @@ func (c *SliceTypeComparer) CompareWithOptions(expected, actual reflect.Value, f
 	// 检查切片元素类型是否兼容
 	expectedElemType := expected.Type().Elem()
 	actualElemType := actual.Type().Elem()
-	
+
 	// 如果元素类型完全不同且不能相互转换，则认为是不同的
-	if expectedElemType != actualElemType && 
-		!expectedElemType.ConvertibleTo(actualElemType) && 
+	if expectedElemType != actualElemType &&
+		!expectedElemType.ConvertibleTo(actualElemType) &&
 		!actualElemType.ConvertibleTo(expectedElemType) {
+
+		for expectedElemType.Kind() == reflect.Ptr {
+			expectedElemType = expectedElemType.Elem()
+		}
+		for actualElemType.Kind() == reflect.Ptr {
+			actualElemType = actualElemType.Elem()
+		}
+
 		// 特殊处理：如果都是结构体类型，允许进行字段级比较
 		if expectedElemType.Kind() != reflect.Struct || actualElemType.Kind() != reflect.Struct {
 			result.Status = StatusDifferent

@@ -140,3 +140,5 @@ config.toml
 .golangci.yaml
 .trunk
 .vscode
+swagger.json
+SDK_API_对应关系分析.md
