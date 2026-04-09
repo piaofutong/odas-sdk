@@ -9,6 +9,7 @@ import (
 type Req struct {
 	DateRangeReq
 	Lid        string `json:"lid"`
+	Tid        string `json:"tid"`
 	ExcludeLid string `json:"excludeLid"`
 	ExcludeTid string `json:"excludeTid"`
 	DateType   int    `json:"dateType"`
@@ -24,6 +25,9 @@ func (r Req) Params() url.Values {
 	params := url.Values{}
 	if r.Lid != "" {
 		params.Add("lid", r.Lid)
+	}
+	if r.Tid != "" {
+		params.Add("tid", r.Tid)
 	}
 	if r.ExcludeLid != "" {
 		params.Add("excludeLid", r.ExcludeLid)
