@@ -60,7 +60,10 @@ type PaymentMethodByTicketResponse struct {
 }
 
 type PaymentMethodByTicketListItem struct {
-	Channel string  `json:"name"`
-	Total   int     `json:"count"`
-	Rate    float64 `json:"rate"`
+	ChannelId       int     `json:"id"`
+	ChannelName     string  `json:"name"`
+	TicketCount     int     `json:"ticket_count"`
+	Amount          int     `json:"amount"`
+	AmountRate      float64 `json:"amount_rate"`
+	TicketCountRate float64 `json:"ticket_count_rate"`
 }
