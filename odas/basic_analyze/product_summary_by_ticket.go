@@ -7,8 +7,9 @@ import (
 	"fmt"
 	"net/url"
 
-	types "github.com/piaofutong/odas-sdk/odas/common"
 	strconv "strconv"
+
+	types "github.com/piaofutong/odas-sdk/odas/common"
 )
 
 // ProductSummaryByTicketReq
@@ -123,14 +124,8 @@ type SummaryByTicketList struct {
 
 // ProductSummary
 type ProductSummary struct {
-	SaleNum            int64 `json:"saleNum"`            // 销售数量
-	SaleMoney          int64 `json:"saleMoney"`          // 销售金额(分)
-	PaymentMoney       int64 `json:"paymentMoney"`       // 支付金额(分)
-	ProfitMoney        int64 `json:"profitMoney"`        // 利润金额(分)
-	CancelNum          int64 `json:"cancelNum"`          // 取消数量
-	CancelPaymentMoney int64 `json:"cancelPaymentMoney"` // 取消支付金额(分)
-	CancelSaleMoney    int64 `json:"cancelSaleMoney"`    // 取消销售金额(分)
-	CancelProfitMoney  int64 `json:"cancelProfitMoney"`  // 取消利润金额(分)
+	TicketCount int64 `json:"ticketCount"` // 票数
+	Amount      int64 `json:"amount"`      // 金额（单位：分）
 }
 
 // ProductSummaryRate
